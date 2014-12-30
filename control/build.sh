@@ -11,9 +11,9 @@ log()  { printf "$*\n" ; return $? ;  }
 fail() { log "\nERROR: $*\n" ; exit 1 ; }
 
 create_home() {
-  ievms_home="${HOME}/ievms"
-  mkdir -p "${ievms_home}"
-  cd "${ievms_home}"
+  deuac_home="${HOME}/deuac"
+  mkdir -p "${deuac_home}"
+  cd "${deuac_home}"
 }
 
 install_packages() {
@@ -23,54 +23,54 @@ install_packages() {
 download_cross_compiler() {
   url="http://landley.net/aboriginal/downloads/binaries/cross-compiler-i686.tar.bz2"
   archive=`basename "${url}"`
-  log "Downloading cross compiler archive from ${url} to ${ievms_home}/${archive}"
+  log "Downloading cross compiler archive from ${url} to ${deuac_home}/${archive}"
   if [[ ! -e "${archive}" ]] && ! curl -L "${url}" -o "${archive}"
   then
-    fail "Failed to download ${url} to ${ievms_home}/${archive} using 'curl', error code ($?)"
+    fail "Failed to download ${url} to ${deuac_home}/${archive} using 'curl', error code ($?)"
   fi
 }
 
 extract_cross_compiler() {
   cross_compiler=`basename "${archive}" .tar.bz2`
-  log "Extracting cross compiler archive from ${archive} to ${ievms_home}/${cross_compiler}"
+  log "Extracting cross compiler archive from ${archive} to ${deuac_home}/${cross_compiler}"
   if [[ ! -e "${cross_compiler}" ]] && ! tar -jxf "${archive}"
   then
-    fail "Failed to extract ${archive} to ${ievms_home}/${cross_compiler} using 'tar', error code ($?)"
+    fail "Failed to extract ${archive} to ${deuac_home}/${cross_compiler} using 'tar', error code ($?)"
   fi
 }
 
 download_kernel() {
   url="http://www.kernel.org/pub/linux/kernel/v3.0/linux-3.5.tar.bz2"
   archive=`basename "${url}"`
-  log "Downloading kernel archive from ${url} to ${ievms_home}/${archive}"
+  log "Downloading kernel archive from ${url} to ${deuac_home}/${archive}"
   if [[ ! -e "${archive}" ]] && ! curl -L "${url}" -o "${archive}"
   then
-    fail "Failed to download ${url} to ${ievms_home}/${archive} using 'curl', error code ($?)"
+    fail "Failed to download ${url} to ${deuac_home}/${archive} using 'curl', error code ($?)"
   fi  
 }
 
 extract_kernel() {
   kernel_src=`basename "${archive}" .tar.bz2`
-  log "Extracting kernel archive from ${archive} to ${ievms_home}/${kernel_src}"
+  log "Extracting kernel archive from ${archive} to ${deuac_home}/${kernel_src}"
   if [[ ! -e "${kernel_src}" ]] && ! tar -jxf "${archive}"
   then
-    fail "Failed to extract ${archive} to ${ievms_home}/${kernel_src} using 'tar', error code ($?)"
+    fail "Failed to extract ${archive} to ${deuac_home}/${kernel_src} using 'tar', error code ($?)"
   fi  
 }
 
 configure_kernel() {
   kernel_config="/vagrant/control/kernel.config"
-  log "Configuring kernel from ${kernel_config} to ${ievms_home}/${kernel_src}/.config"
+  log "Configuring kernel from ${kernel_config} to ${deuac_home}/${kernel_src}/.config"
   cp "${kernel_config}" "${kernel_src}/.config"
 }
 
 build_kernel() {
-  kernel="${ievms_home}/${kernel_src}/arch/x86/boot/bzImage"
+  kernel="${deuac_home}/${kernel_src}/arch/x86/boot/bzImage"
   cd "${kernel_src}"
-  log "Building kernel in ${ievms_home}/${kernel_src} to ${kernel}"
+  log "Building kernel in ${deuac_home}/${kernel_src} to ${kernel}"
   if [[ ! -e "${kernel}" ]] && ! make
   then
-    fail "Failed to build kernel in ${ievms_home}/${kernel_src} using 'make', error code ($?)"
+    fail "Failed to build kernel in ${deuac_home}/${kernel_src} using 'make', error code ($?)"
   fi
   cd -
 }
@@ -78,19 +78,19 @@ build_kernel() {
 download_iso() {
   url="http://pogostick.net/~pnh/ntpasswd/cd110511.zip"
   archive=`basename "${url}"`
-  log "Downloading ntpasswd ISO archive from ${url} to ${ievms_home}/${archive}"
+  log "Downloading ntpasswd ISO archive from ${url} to ${deuac_home}/${archive}"
   if [[ ! -e "${archive}" ]] && ! curl -L "${url}" -o "${archive}"
   then
-    fail "Failed to download ${url} to ${ievms_home}/${archive} using 'curl', error code ($?)"
+    fail "Failed to download ${url} to ${deuac_home}/${archive} using 'curl', error code ($?)"
   fi  
 }
 
 extract_iso() {
   iso=`basename "${archive}" .zip`.iso
-  log "Extracting ntpasswd ISO archive from ${archive} to ${ievms_home}/${iso}"
+  log "Extracting ntpasswd ISO archive from ${archive} to ${deuac_home}/${iso}"
   if [[ ! -e "${iso}" ]] && ! unzip "${archive}"
   then
-    fail "Failed to extract ${archive} to ${ievms_home}/${iso} using 'unzip', error code ($?)"
+    fail "Failed to extract ${archive} to ${deuac_home}/${iso} using 'unzip', error code ($?)"
   fi  
 }
 
@@ -104,7 +104,7 @@ unpack_iso() {
 }
 
 extract_initrd() {
-  initrd="${ievms_home}/initrd"
+  initrd="${deuac_home}/initrd"
   initrd_cgz="${remaster_iso}/initrd.cgz"
   mkdir -p "${initrd}"
   cd "${initrd}"
@@ -121,8 +121,8 @@ copy_scripts() {
   cp "/vagrant/control/xp.reg" "${initrd}/scripts/"
   cp "/vagrant/control/deuac.reg" "${initrd}/scripts/"
   cp "/vagrant/control/vboxga.bat" "${initrd}/scripts/"
-  cp "/vagrant/control/ievms.xml" "${initrd}/scripts/"
-  cp "/vagrant/control/ievms.bat" "${initrd}/scripts/"
+  cp "/vagrant/control/deuac.xml" "${initrd}/scripts/"
+  cp "/vagrant/control/deuac.bat" "${initrd}/scripts/"
   cp "/vagrant/control/isolinux.cfg" "${remaster_iso}/isolinux.cfg"
   cp "/vagrant/control/isolinux.cfg" "${remaster_iso}/syslinux.cfg"
   cp "${kernel}" "${remaster_iso}/"
@@ -140,9 +140,9 @@ compress_initrd() {
 }
 
 pack_iso() {
-  iso_out="/vagrant/ievms-control.iso"
-  log "Packing ievms ISO from ${remaster_iso} to ${iso_out}"
-  if ! genisoimage -o "${iso_out}" -b isolinux.bin -c boot.cat -p "ievms" -no-emul-boot -boot-load-size 4 -boot-info-table -V "IEVMS" -cache-inodes -r -J -l -joliet-long "${remaster_iso}" 
+  iso_out="/vagrant/deuac.iso"
+  log "Packing deuac ISO from ${remaster_iso} to ${iso_out}"
+  if ! genisoimage -o "${iso_out}" -b isolinux.bin -c boot.cat -p "deuac" -no-emul-boot -boot-load-size 4 -boot-info-table -V "deuac" -cache-inodes -r -J -l -joliet-long "${remaster_iso}" 
   then
     fail "Failed to pack ${remaster_iso} to ${iso_out} using 'genisoimage', error code ($?)"
   fi
@@ -152,7 +152,7 @@ create_home
 install_packages
 download_cross_compiler
 extract_cross_compiler
-export PATH="${ievms_home}/${cross_compiler}/bin:$PATH"
+export PATH="${deuac_home}/${cross_compiler}/bin:$PATH"
 download_kernel
 extract_kernel
 configure_kernel
