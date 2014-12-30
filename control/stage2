@@ -17,16 +17,6 @@ then
   reged -IC /disk/WINDOWS/system32/config/system HKEY_LOCAL_MACHINE\\SYSTEM /scripts/xp.reg
 else
   reged -IC /disk/Windows/System32/config/SOFTWARE HKEY_LOCAL_MACHINE\\SOFTWARE /scripts/deuac.reg
-
-  if [ -d /disk/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Startup ]
-  then
-    cp /scripts/vboxga.bat /disk/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Startup/
-  else
-    cp /scripts/vboxga.bat /disk/ProgramData/Microsoft/Windows/Start\ Menu/Programs/StartUp/
-  fi
-
-  cp /scripts/deuac.xml /disk/deuac.xml
-  cp /scripts/deuac.bat /disk/deuac.bat
 fi
 umount /disk 2>/dev/null
 poweroff
