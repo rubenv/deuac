@@ -1,4 +1,4 @@
-Bootable ISO image to disable UAC on Windows Machines.
+Bootable ISO image to disable UAC on Windows machines.
 
 Based on [ievms](https://github.com/xdissent/ievms).
 
