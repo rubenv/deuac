@@ -25,7 +25,6 @@ else
     cp /scripts/vboxga.bat /disk/ProgramData/Microsoft/Windows/Start\ Menu/Programs/StartUp/
   fi
 
-  cp /scripts/reuac.reg /disk/reuac.reg
   cp /scripts/ievms.xml /disk/ievms.xml
   cp /scripts/ievms.bat /disk/ievms.bat
 fi

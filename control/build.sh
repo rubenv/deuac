@@ -120,7 +120,6 @@ copy_scripts() {
   cp "/vagrant/control/stage2" "${initrd}/scripts/"
   cp "/vagrant/control/xp.reg" "${initrd}/scripts/"
   cp "/vagrant/control/deuac.reg" "${initrd}/scripts/"
-  cp "/vagrant/control/reuac.reg" "${initrd}/scripts/"
   cp "/vagrant/control/vboxga.bat" "${initrd}/scripts/"
   cp "/vagrant/control/ievms.xml" "${initrd}/scripts/"
   cp "/vagrant/control/ievms.bat" "${initrd}/scripts/"
