@@ -17,7 +17,7 @@ create_home() {
 }
 
 install_packages() {
-  apt-get install -y uck curl unzip
+  apt-get install -y uck curl unzip libncurses5-dev
 }
 
 download_cross_compiler() {
