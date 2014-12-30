@@ -33,7 +33,7 @@
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>C:\ievms.bat</Command>
+      <Command>C:\deuac.bat</Command>
     </Exec>
   </Actions>
 </Task>

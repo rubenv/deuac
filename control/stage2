@@ -25,8 +25,8 @@ else
     cp /scripts/vboxga.bat /disk/ProgramData/Microsoft/Windows/Start\ Menu/Programs/StartUp/
   fi
 
-  cp /scripts/ievms.xml /disk/ievms.xml
-  cp /scripts/ievms.bat /disk/ievms.bat
+  cp /scripts/deuac.xml /disk/deuac.xml
+  cp /scripts/deuac.bat /disk/deuac.bat
 fi
 umount /disk 2>/dev/null
 poweroff
