@@ -1,7 +1,8 @@
 # coding: utf-8
 
-Vagrant::Config.run do |config|
-  config.vm.box = "precise32"
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "puppetlabs/ubuntu-12.04-32-nocm"
   config.vm.provision :shell, :path => "control/build.sh"
 end
